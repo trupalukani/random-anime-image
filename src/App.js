@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
+import nekoData from "./api.js";
+import DataList from "./components/DataList.js";
+import SearchFrom from "./components/SearchFrom.js";
+import SearchBar from "./components/SearchBar.js";
 
 function App() {
+  const [nekos, setNekos] = useState([]);
+
+  const handleSubmit = async (neko) => {
+    const result = await nekoData(neko);
+    return setNekos(result);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="data-main">
+      <div style={{marginRight: 50}}>
+        <h2>Search for your taste!</h2>
+        <SearchFrom />
+        <SearchBar onSubmit={handleSubmit} />
+      </div>
+      <div>
+        <DataList nekos={nekos} />
+      </div>
     </div>
   );
 }
